@@ -19,7 +19,7 @@ Ideally, each project should have it's own bucket associated with it, for ease o
 # Create Filestore Fileshare Instance.
 In the top left corner of the GCP console, click the navigation menu, navigate to Filestore, and click Create an Instance. Choose us-east1 as the region and us-east-1b as the zone. Use default settings for everything else, choosing whatever file share name and instance ID. Once you create, note the `server_ip`:`/fileshare_name` that is shown. 
 
-# Deploy Clluster 
+# Deploy Cluster 
 Edit `slurm-cluster.yaml` and replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name` .
 
 
@@ -34,8 +34,10 @@ cd slurm_gcp
 
 gcloud deployment-manager deployments     --project="$(gcloud config get-value core/project)"     create $CLUSTER_DEPLOY_NAME     --config ${CLUSTER_DEPLOY_NAME}.yaml
 ```
+
+You should now see the deployment listed under Deployment Manager in the console.
 You may see a warning about disk sizes not matching, but it is fine to ignore the warning. 
-If you attempt to SSH into a VM instance immediately, you will be warned that slurm is currently being installed and a message will be deployed when it is finished. Wait for that message before continuing.
+
 
 # SSH
 To SSH into a VM instance from the console:
@@ -54,6 +56,8 @@ export CLUSTER_LOGIN_NODE=$(gcloud compute instances list \
 
 gcloud compute ssh ${CLUSTER_LOGIN_NODE}     --zone $CLUSTER_ZONE
 ```
+
+If you attempt to SSH into a VM instance immediately, you will be warned that slurm is currently being installed and a message will be deployed when it is finished. Wait for that message before continuing.
 
 **Remember to suspend VM instances when not using to avoid incurring charges**
 
