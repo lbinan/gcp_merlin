@@ -67,9 +67,9 @@ resources:
   # network_storage is mounted on all instances
   # login_network_storage is mounted on controller and login instances
     network_storage           :
-      - server_ip: 10.112.122.138
-        remote_mount: /remy
-        local_mount: /mnt/disks/sec
+      - server_ip: 10.218.159.42
+        remote_mount: /tomato
+        local_mount: /mnt/disks/pep
         fs_type: nfs
     # login_network_storage     :
     #   - server_ip: <storage host>
