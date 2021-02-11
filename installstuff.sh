@@ -11,10 +11,9 @@ conda create -n merlin_env python=3.6
 source activate merlin_env
 conda install rtree
 conda install pytables
-cd ~
-cd MERlin
+cd ~/MERlin
 git checkout organization_updates
-cd ..
+cd ~
 pip install -e MERlin
 pip install snakemake==5.12.0
 pip install tifffile==0.14.0
