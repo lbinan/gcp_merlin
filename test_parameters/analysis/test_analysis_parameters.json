@@ -166,16 +166,6 @@
             "module": "merlin.analysis.globalalign"
         },
         {
-            "task": "GenerateMosaic",
-            "module": "merlin.analysis.generatemosaic",
-            "parameters": {
-                "global_align_task": "SimpleGlobalAlignment",
-                "warp_task": "FiducialCorrelationWarp",
-                "microns_per_pixel": 0.2,
-                "data_channels": ["DAPI","bit1"]
-            }
-        },
-        {
             "task": "PlotPerformance",
             "module": "merlin.analysis.plotperformance",
             "parameters": {

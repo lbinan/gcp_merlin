@@ -1,0 +1,15 @@
+{
+    "analysis_tasks": [
+        {
+            "task": "GenerateMosaic",
+            "module": "merlin.analysis.generatemosaic",
+            "parameters": {
+                "global_align_task": "SimpleGlobalAlignment",
+                "warp_task": "FiducialCorrelationWarp",
+                "microns_per_pixel": 0.2,
+                "data_channels": ["DAPI","polyT"]
+            }
+        }
+    ]
+
+}
