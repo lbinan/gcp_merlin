@@ -23,6 +23,8 @@ In the top left corner of the GCP console, click the navigation menu, navigate t
 # Deploy Cluster 
 Edit `slurm-cluster.yaml` and replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name` .
 
+If you are running on Broad's UGER system, run `use Google-Cloud-SDK` before running the following commands.
+
 ```
 export CLUSTER_DEPLOY_NAME="slurm-cluster"
 export CLUSTER_NAME="merlin-cluster"
@@ -128,7 +130,7 @@ Submit the job using `sbatch runmerlin.sh`
 Use `squeue` to check current job statuses and `scancel job_id` to cancel a job. See slurm documentation for more commands.
 
 ## If you have many FOVs (>1000)
-Running MERlin on 1500 FOVs will increase the memory requirements for certain tasks including GenerateMosaic and potentially ExportBarcodes beyond the 7.5GB available in the current configuration. Instead of running MERlin once with one parameters file as above, you should instead run all of the MERlin tasks EXCEPT for those that require more memory following the above steps. There is an example analysis json called `no_generate_mosaic.json` that contains all of the same parameters as `run_all.json` except the GenerateMosaic task. After the Fiducial Correlation Warp task is done, you will launch a separate VM instance with sufficient memory to run the GenerateMosaic task. Make sure to put the parameters directory on the mounted Filestore file share so both VMs can access it.
+Running MERlin on 1500 FOVs will increase the memory requirements for certain tasks including GenerateMosaic and potentially ExportBarcodes beyond the 7.5GB available in the current configuration. Instead of running MERlin once with one parameters file as above, you should instead run all of the MERlin tasks EXCEPT for those that require more memory following the above steps. There is an example analysis json called `no_generate_mosaic.json` that contains all of the same parameters as `run_all.json` except the GenerateMosaic task. After the Fiducial Correlation Warp task is done, you will launch a separate VM instance with sufficient memory to run the GenerateMosaic task using `justgm.json`. The ExportBarcodes task needs to be run after AdaptiveFilterBarcodes, so usually at the very end. Make sure to put the parameters directory on the mounted Filestore file share so both VMs can access it.
 
 ### New VM Instance
 Navigate to the VM instances page and click Create Instance. Set region and zone to us-east1-b. The compute machines used for the other tasks are N1-standard-2, for this instance I found N1-highmem-2 was sufficient for running GenerateMosaic on 1500 FOVs. You can set the Boot disk Operating system to Centos just like the other machines. Make sure the Compute Engine default service account has full access to all Cloud APIs, then Create.
@@ -150,7 +152,8 @@ Once you are done, move the output from /mnt/disks/sec to the Google Bucket wher
 To generate "mosaics" from the barcodes.csv, change the variables at the top of make_merfish_mosaics.py and run.
 
 # Done with everything
-Shut down the filestore instance and deployment, deleting all VMs created by it. If you no longer plan on accessing the Google bucket, change its storage level to Archive. 
+Shut down the filestore instance and deployment, deleting all VMs created by it. If you no longer plan on accessing the Google bucket, change its storage level to Archive for future uploads. To change the storage class of objects already in the bucket run
+`gsutil rewrite -s STORAGE_CLASS gs://PATH_TO_OBJECT`
 
 
     
