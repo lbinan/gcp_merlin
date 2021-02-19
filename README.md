@@ -21,7 +21,9 @@ Ideally, each project should have it's own bucket associated with it, for ease o
 In the top left corner of the GCP console, click the navigation menu, navigate to Filestore, and click Create an Instance. Choose us-east1 as the region and us-east-1b as the zone. Use default settings for everything else, choosing whatever file share name and instance ID. Once you create, note the `server_ip`:`/fileshare_name` that is shown. 
 
 # Deploy Cluster 
-Edit `slurm-cluster.yaml` and replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name` .
+
+Clone the repository using `git clone https://github.com/clearylab/gcp_merlin.git`. 
+In the slurm_gcp directory, edit `slurm-cluster.yaml` and replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name` .
 
 If you are running on Broad's UGER system, run `use Google-Cloud-SDK` before running the following commands.
 
