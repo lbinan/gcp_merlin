@@ -8,24 +8,24 @@
 7. Analyze results, either on UGER or GCP VM instance
 8. Move output from mounted fileshare to Google bucket
 
-# Storage on Google Bucket practices
-Currently there are 4 buckets. 
-1. `gs://merlintest` which contains some small sets of data for testing MERlin on (I may remove these soon), and a subdirectory `keep` that contains files I wanted to keep between cluster/filestore deployment.
-2. `gs://old_merfish_data` which only contains the THP1 dataset.
-3. `gs://mb1_1505fov` which contains the 1505 field of view mouse brain dataset with focus lock issues.
-4. `gs://george_mb` which contains another mouse brain dataset George collected after fixing the focus lock.
+# 1. Storage on Google Bucket practices
+In gs://merlintest/test2, there is a dataset currently labelled data_for_Peter with 7 or 8 FOVs that you can run with the test_parameters given in the GitHub.
 
 Ideally, each project should have it's own bucket associated with it, for ease of changing storage class and permissions as appropriate. Each bucket will contain the data and the output once MERlin is run. Permissions can be set for individual objects within each bucket, or the bucket as a whole. For projects currently in use, create a bucket that is in the 'standard' default storage class. Once you are done, you can change the bucket to an 'archive' storage class or whatever class is appropriate for your needs. Going down in storage class means that accesses will be more expensive, but storage will be cheaper. 
 
-# Create Filestore Fileshare Instance.
+# 2. Create Filestore Fileshare Instance.
 In the top left corner of the GCP console, click the navigation menu, navigate to Filestore, and click Create an Instance. Choose us-east1 as the region and us-east-1b as the zone. Use default settings for everything else, choosing whatever file share name and instance ID. Once you create, note the `server_ip`:`/fileshare_name` that is shown. 
 
-# Deploy Cluster 
+# 3. Deploy Cluster 
 
-Clone the repository using `git clone https://github.com/clearylab/gcp_merlin.git`. 
-In the slurm_gcp directory, edit `slurm-cluster.yaml` and replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name` .
+Clone the repository using `git clone https://github.com/clearylab/gcp_merlin.git`. Inside the slurm_gcp directory are .yaml files.
 
-If you are running on Broad's UGER system, run `use Google-Cloud-SDK` before running the following commands.
+If you plan on running hundreds or fewer of FOVs such as for using the example dataset, edit slurm-cluster.yaml. If you plan on running thousands or more of FOVs, edit slurm-cluster-2.yaml which has a second partition of high memory nodes. 
+
+Replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name`. 
+In the `debug` partition, change the max_node_count to 55 or the number of FOVs + 5, whichever is higher.
+
+If you are running on Broad's UGER system, run `use Google-Cloud-SDK` before running the following lines, otherwise you must install the Google Cloud SDK.
 
 ```
 export CLUSTER_DEPLOY_NAME="slurm-cluster"
@@ -42,7 +42,7 @@ You should now see the deployment listed under Deployment Manager in the console
 You may see a warning about disk sizes not matching, but it is fine to ignore the warning. 
 
 
-# SSH
+# 4. SSH
 To SSH into a VM instance from the console:
 1. Go to Compute Engine under navigation > VM instances
 2. Select the controller and login VMs and press Start/Resume
@@ -64,17 +64,17 @@ If you attempt to SSH into a VM instance immediately, you will be warned that sl
 
 **Remember to suspend VM instances when not using to avoid incurring charges**
 
-# Check mounted disk
+# 5. Check mounted disk
 I hae been having issues with the mounted disk so make sure that this works, otherwise there's not enough space to write the results of MERlin.
 1. Run ```df``` when SSH'ed into the _controller_ VM instance, you should see `/mnt/disks/sec` listed somewhere. If you do not see this, skip to 3. If you do, proceed to 2.
 2. If the above works, try writing something to /mnt/disks/sec. For instance, try ```touch a.txt``` . If that works, everything's good. If not, run ```sudo chmod 777 /mnt/disks/sec``` and try to touch a text file again.
 3. If 1 does not work, try running `gcloud filestore instances list`. Do you see the fileshare name you created earlier listed? If you do, try step 1 again. I don't know why but sometimes this fixes it. If not, check that you have actually created the filestore instance and put the correct IP and name in the .yaml file.
 
-# Install necessary software
+# 6. Install necessary software
 If this is the first time using the instance, you will have to install the necessary software. `installstuff.sh` in the repo contains everything you need to install.
 You can upload files inside the SSH window. Run ``` bash installstuff.sh ``` in the home directory
 
-# Prepare to run MERlin
+# 7. Prepare to run MERlin
 ### Configure .merlinenv
 Create a .merlinenv file in your home directory as below
 ```
@@ -83,7 +83,7 @@ ANALYSIS_HOME=/mnt/disks/sec
 PARAMETERS_HOME=/your_parameters
 ```
 
-Your data should be in a Google bucket. Set the DATA_HOME in the .merlinenv to point to the bucket address of the parent directory of the data folder eg gs://parent if the data is stored like gs://parent/Data/....dax 
+Your data should be in a Google bucket. Set the DATA_HOME in the .merlinenv to point to the bucket address of the parent directory of the data folder eg. gs://parent if the data is stored like gs://parent/Data/....dax 
 If you have installed MERlin from my (zheng-broad) fork as in the installstuff.sh script I have provided, then this should not be a problem. Currently, the official version of MERlin is not configured to accept gs:// addresses.
 
 ANALYSIS_HOME should be in /mnt/disks/sec to use the filestore instance. 
@@ -92,7 +92,7 @@ I have provided an example for the parameters directory in test_parameters.
 
 ### Configure parameters. 
 #### Analysis parameters
-I recommend these following parameters in the analysis folder of the parameters, avoiding writing unnecessary images to save space.
+I recommend these values for the analysis folder of the parameters, avoiding writing unnecessary images to save space.
 a. Decode: "write_decoded_images": false,
 b. FiducialCorrelationWarp: "write_aligned_images": false,
 c. GenerateMosaic: "separate_files":true 
@@ -134,19 +134,7 @@ Use `squeue` to check current job statuses and `scancel job_id` to cancel a job.
 ## If you have many FOVs (>1000)
 Running MERlin on 1500 FOVs will increase the memory requirements for certain tasks including GenerateMosaic and potentially ExportBarcodes beyond the 7.5GB available in the current configuration. Instead of running MERlin once with one parameters file as above, you should instead run all of the MERlin tasks EXCEPT for those that require more memory following the above steps. There is an example analysis json called `no_generate_mosaic.json` that contains all of the same parameters as `run_all.json` except the GenerateMosaic task. After the Fiducial Correlation Warp task is done, you will launch a separate VM instance with sufficient memory to run the GenerateMosaic task using `justgm.json`. If necessary, you can create similiar modifications to isolate ExportBarcodes and/or PlotPerformance. The ExportBarcodes task needs to be run after AdaptiveFilterBarcodes, so usually at the very end. Make sure to put the parameters directory on the mounted Filestore file share so both VMs can access it.
 
-### New VM Instance
-Navigate to the VM instances page and click Create Instance. Set region and zone to us-east1-b. The compute machines used for the other tasks are N1-standard-2, for this instance I found N1-highmem-2 was sufficient for running GenerateMosaic on 1500 FOVs. You can set the Boot disk Operating system to Centos just like the other machines. Make sure the Compute Engine default service account has full access to all Cloud APIs, then Create.
 
-Before running `installstuff.sh`, run
-```
-sudo yum update &&
-sudo yum install -y nfs-utils wget mesa-libGL gcc git
-```
-
-Execute `sudo mkdir -p mount-point-directory` replacing mount-point-directory with the path where you want to mount the fileshare instance (preferrably the same path that it is mounted on in the other VMs for the main task). Then run `sudo mount ip-address:/file-share mount-point-directory` where the ip-address:/file-share is the server IP address and fileshare name for the Filestore instance. Follow the same instructions as before in *Check Mounted Disk* to check that this is properly mounted.
-
-Then run `runmerlin.sh` replacing the parameters.json file with the file that just contains the GenerateMosaic task (example shown in generate_mosaic.json). You may also need to check the file paths for output, as I am directing outputs from the main file submitted via sbatch to ~/slurm_outputs and outputs from the submitted tasks to ~/snake_outputs. Create those directories in the new home directory of this new VM if necessary.
-### 
 
 # Analysis
 Once you are done, move the output from /mnt/disks/sec to the Google Bucket where the data is using `gsutil -m cp -r current_dir gs://bucket_dir`. You can analyze results either on the VM instance or on UGER by downloading the data from the Google Bucket.
