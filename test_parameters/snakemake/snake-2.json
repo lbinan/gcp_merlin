@@ -1,5 +1,5 @@
 {
-    "cluster": "sbatch --mem={cluster.mem} -c 1 -n {cluster.n}  -t {cluster.time} -o {cluster.out} -e {cluster.err}",
+    "cluster": "sbatch --mem={cluster.mem} --partition={cluster.partition} -c 1 -n {cluster.n}  -t {cluster.time} -o {cluster.out} -e {cluster.err}",
     "cluster_config": "/home/zheng/test_parameters/snakemake/clusterconfig.json",
     "nodes": 100,
     "latency_wait": 300,

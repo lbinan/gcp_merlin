@@ -61,6 +61,7 @@ resources:
     # login_node_service_account: default
     login_node_scopes         :
       - https://www.googleapis.com/auth/devstorage.full_control
+      - https://www.googleapis.com/auth/datastore
     # - https://www.googleapis.com/auth/logging.write
 
   # Optional network storage fields
@@ -69,7 +70,7 @@ resources:
     network_storage           :
       - server_ip: 10.218.159.42
         remote_mount: /tomato
-        local_mount: /mnt/disks/pep
+        local_mount: /mnt/disks/sec
         fs_type: nfs
     # login_network_storage     :
     #   - server_ip: <storage host>
