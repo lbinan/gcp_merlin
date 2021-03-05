@@ -107,7 +107,7 @@ resources:
     partitions :
       - name              : debug
         machine_type      : n1-standard-2
-        max_node_count    : 2000
+        max_node_count    : 100
         zone              : us-east1-b
 
     # Optional compute configuration fields
