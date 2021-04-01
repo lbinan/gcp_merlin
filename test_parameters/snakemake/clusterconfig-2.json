@@ -3,8 +3,8 @@
         "time" : "24:00:00",
         "n" : 1,
         "mem" : "3000",
-        "out" : "/home/zheng/snake_outputs/%j.stdout.txt",
-        "err" : "/home/zheng/snake_outputs/%j.stderr.txt",
+        "out" : "$HOME/snake_outputs/%j.stdout.txt",
+        "err" : "$HOME/snake_outputs/%j.stderr.txt",
         "partition" : "debug"
     },
     "DeconvolutionPreprocess" : {
