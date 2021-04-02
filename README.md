@@ -72,6 +72,8 @@ gcloud compute ssh ${CLUSTER_LOGIN_NODE}     --zone $CLUSTER_ZONE
 ```
 
 ## Tips
+If you get an error message about the Python installation, run `CLOUDSDK_PYTHON=python3`. If you are on Broad's UGER, make sure not to use the Python dotkit and use your own Python installation.
+
 You may see a error message about a group ID, this is fine to ignore.
 
 If you attempt to SSH into a VM instance immediately, you will be warned that slurm is currently being installed and a message will be deployed when it is finished. Wait for that message before continuing.
