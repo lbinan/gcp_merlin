@@ -53,12 +53,12 @@ You may see a warning about disk sizes not matching, but it is fine to ignore th
 
 There are two options to SSH into a VM
 
-## To SSH into a VM instance from the console:
+### 1.To SSH into a VM instance from the console:
 1. Go to Compute Engine under navigation > VM instances
 2. Select the controller and login VMs and press Start/Resume
 3. Once started, press the SSH button to launch an SSH session 
 
-## To SSH into a VM instance using gcloud command-line tool
+### 2.To SSH into a VM instance using gcloud command-line tool
 The following commands are to SSH into the login node using the Google Cloud SDK.
 ```
 gcloud compute ssh ${CLUSTER_NAME}-controller     --command "sudo journalctl -fu google-startup-scripts.service"     --zone $CLUSTER_ZONE
@@ -71,7 +71,7 @@ export CLUSTER_LOGIN_NODE=$(gcloud compute instances list \
 gcloud compute ssh ${CLUSTER_LOGIN_NODE}     --zone $CLUSTER_ZONE
 ```
 
-##Tips
+## Tips
 You may see a error message about a group ID, this is fine to ignore.
 
 If you attempt to SSH into a VM instance immediately, you will be warned that slurm is currently being installed and a message will be deployed when it is finished. Wait for that message before continuing.
@@ -87,12 +87,12 @@ I hae been having issues with the mounted filestore instance so make sure that t
 # 5. Install necessary software
 If this is the first time using the instance, you will have to install the necessary software. `installstuff.sh` in the repo contains everything you need to install. You can run the lines below to clone this directory into the home directory and run installstuff.sh
 
-`
+```
 cd ~
 git clone https://github.com/clearylab/gcp_merlin.git
 cd gcp_merlin
 bash installstuff.sh
-`
+```
 
 `installstuff.sh` installs the necessary software and also creates two directories `snake_outputs` and `slurm_outputs` that MERlin will write standard output to. 
 
@@ -167,7 +167,7 @@ Running MERlin on 1500 FOVs will increase the memory requirements for certain ta
 ### Potential issue reading data
 You will likely not have this issue if you are using the default service account, but sometimes merlin does not allow me to read directly from the bucket without using gsutil to download without exporting the `GOOGLE_APPLICATION_CREDENTIALS` See here for more information if you get this issue https://cloud.google.com/docs/authentication/getting-started
 
-###Windows error
+### Windows error
 If you see the following error:
 `sbatch: error: Batch script contains DOS line breaks (\r\n) 
 sbatch: error: instead of expected UNIX line breaks (\n)`
