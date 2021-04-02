@@ -108,7 +108,7 @@ PARAMETERS_HOME=/home/zheng/gcp_merlin/test_parameters
 ```
 
 Your data should be in a Google bucket. Set the DATA_HOME in the .merlinenv to point to the bucket address of the parent directory of the data folder. In our example, the .dax files of our data are in gs://merlintest/test/data. `data` is the name of our dataset, and `gs://merlintest/test` will be our DATA_HOME. 
-If you have installed MERlin from my (zheng-broad) fork as in the installstuff.sh script I have provided, then this should not be a problem. Currently, the official version of MERlin is not configured to accept gs:// addresses.
+If you have installed MERlin from the clearylab fork as in the installstuff.sh script I have provided, then this should not be a problem. Currently, the official version of MERlin is not configured to accept gs:// addresses.
 
 ANALYSIS_HOME should be in /mnt/disks/sec to use the filestore instance. 
 
