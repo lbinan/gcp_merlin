@@ -142,7 +142,7 @@ runmerlin.sh
 #SBATCH -t 7-00:00:00
 #SBATCH --mem 2000
 #SBATCH --open-mode=append
-#SBATCH --output="~/slurm_outputs/slurm-%A.out"
+#SBATCH --output="/home/zheng/slurm_outputs/slurm-%A.out"
 
 source ~/.bash_profile
 conda activate merlin_env
@@ -153,7 +153,7 @@ merlin -a nosegment.json -m VizgenAlpha.json -o dataorganization.csv -c codebook
 json data
 ```
 The merlin command above uses files from the test_parameters folder with the corresponding codebook for the test data given. 
-Change the paths in the above bash file as appropriate. I put the output for this job in slurm_outputs to avoid cluttering my home folder, but you can change that. 
+You **must** change the output folder to an appropriate path. To use the slurm_outputs in your home directory, just change the prefix /home/zheng to your home directory.
 If you are running multiple jobs at once with different data and analysis paths, you can specify those with -e and -s respecively in the MERlin command. You can NOT specify different parameter paths from the .merlinenv, so maintain one parameters directory and change the names of the files as appropriate if you are running multiple MERlin jobs with different parameters.
 
 Submit the job to slurm using `sbatch runmerlin.sh`
