@@ -153,7 +153,9 @@ merlin -a nosegment.json -m VizgenAlpha.json -o dataorganization.csv -c codebook
 json data
 ```
 The merlin command above uses files from the test_parameters folder with the corresponding codebook for the test data given. 
+
 You **must** change the output folder to an appropriate path. To use the slurm_outputs in your home directory, just change the prefix /home/zheng to your home directory.
+
 If you are running multiple jobs at once with different data and analysis paths, you can specify those with -e and -s respecively in the MERlin command. You can NOT specify different parameter paths from the .merlinenv, so maintain one parameters directory and change the names of the files as appropriate if you are running multiple MERlin jobs with different parameters.
 
 Submit the job to slurm using `sbatch runmerlin.sh`
