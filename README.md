@@ -87,12 +87,12 @@ I hae been having issues with the mounted filestore instance so make sure that t
 # 5. Install necessary software
 If this is the first time using the instance, you will have to install the necessary software. `installstuff.sh` in the repo contains everything you need to install. You can run the lines below to clone this directory into the home directory and run installstuff.sh
 
-`
+```
 cd ~
 git clone https://github.com/clearylab/gcp_merlin.git
 cd gcp_merlin
 bash installstuff.sh
-`
+```
 
 `installstuff.sh` installs the necessary software and also creates two directories `snake_outputs` and `slurm_outputs` that MERlin will write standard output to. 
 
