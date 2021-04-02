@@ -22,5 +22,3 @@ pip install scikit-image==0.15.0
 mkdir snake_outputs
 mkdir slurm_outputs
 
-git clone https://github.com/clearylab/gcp_merlin.git
-
