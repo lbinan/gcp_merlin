@@ -101,7 +101,7 @@ resources:
     # Optional timer fields
     # suspend_time              : 300
 
-    # slurm_version             : 19.05-latest
+    slurm_version             : 20.11-latest
     # ompi_version              : v3.1.x
 
     partitions :
