@@ -26,7 +26,7 @@ The filestore instance will hold the analysis output of MERlin. When deciding ho
 
 Clone the repository using `git clone https://github.com/clearylab/gcp_merlin.git`. Inside the slurm_gcp directory are .yaml files.
 
-If you plan on running hundreds or fewer of FOVs such as for using the example dataset, edit slurm-cluster.yaml. If you plan on running thousands or more of FOVs, edit slurm-cluster-2.yaml which has a second partition of high memory nodes, and change the CLUSTER_DEPLOY_NAME below to "slurm-cluster-2".
+If you plan on running hundreds or fewer of FOVs such as for using the example dataset, edit slurm-cluster.yaml. If you plan on running thousands or more of FOVs, edit slurm-cluster-2.yaml which has a second partition of high memory nodes, and change the CLUSTER_DEPLOY_NAME below to "slurm-cluster-2". Always use slurm-cluster-2, the other is too small to run any real experiment.
 
 Replace the network_storage `server_ip` with the `server_ip` of your filestore instance. Replace the remote_mount with the `/fileshare_name`. 
 
