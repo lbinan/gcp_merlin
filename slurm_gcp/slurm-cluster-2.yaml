@@ -35,7 +35,7 @@ resources:
 
     controller_machine_type : n1-standard-2
     # controller_disk_type      : pd-standard
-    # controller_disk_size_gb   : 50
+    controller_disk_size_gb   : 50
     # external_controller_ip    : False
     # controller_labels         :
     #   key1 : value1
@@ -101,13 +101,13 @@ resources:
     # Optional timer fields
     # suspend_time              : 300
 
-    # slurm_version             : 19.05-latest
+    slurm_version             : 20.11-latest
     # ompi_version              : v3.1.x
 
     partitions :
       - name              : debug
         machine_type      : n1-standard-2
-        max_node_count    : 100
+        max_node_count    : 300
         zone              : us-east1-b
 
     # Optional compute configuration fields
@@ -134,8 +134,8 @@ resources:
     # Additional partition
 
       - name           : partition2
-        machine_type   : n1-highmem-2
-        max_node_count : 3
+        machine_type   : n1-highmem-4
+        max_node_count : 8
         zone           : us-east1-b
 
     # Optional compute configuration fields
