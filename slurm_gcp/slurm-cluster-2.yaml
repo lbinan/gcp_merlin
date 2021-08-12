@@ -35,14 +35,14 @@ resources:
 
     controller_machine_type : n1-standard-2
     # controller_disk_type      : pd-standard
-    # controller_disk_size_gb   : 50
+    controller_disk_size_gb   : 50
     # external_controller_ip    : False
     # controller_labels         :
     #   key1 : value1
     #   key2 : value2
     # controller_service_account: default
-    # controller_scopes         :
-    # - https://www.googleapis.com/auth/cloud-platform
+    controller_scopes         :
+     - https://www.googleapis.com/auth/cloud-platform
     # cloudsql                  :
     #   server_ip: <cloudsql ip>
     #   user: slurm
@@ -52,7 +52,7 @@ resources:
 
     login_machine_type        : n1-standard-2
     # login_disk_type           : pd-standard
-    # login_disk_size_gb        : 20
+    login_disk_size_gb        : 50
     # external_login_ips        : False
     # login_labels              :
     #   key1 : value1
@@ -62,15 +62,16 @@ resources:
     login_node_scopes         :
       - https://www.googleapis.com/auth/devstorage.full_control
       - https://www.googleapis.com/auth/datastore
+      - https://www.googleapis.com/auth/cloud-platform
     # - https://www.googleapis.com/auth/logging.write
 
   # Optional network storage fields
   # network_storage is mounted on all instances
   # login_network_storage is mounted on controller and login instances
     network_storage           :
-      - server_ip: 10.218.159.42
-        remote_mount: /tomato
-        local_mount: /mnt/disks/sec
+      - server_ip: 10.167.45.98
+        remote_mount: /pas
+        local_mount: /mnt/disks/pep
         fs_type: nfs
     # login_network_storage     :
     #   - server_ip: <storage host>
@@ -101,13 +102,13 @@ resources:
     # Optional timer fields
     # suspend_time              : 300
 
-    # slurm_version             : 19.05-latest
+    slurm_version             : 20.11-latest
     # ompi_version              : v3.1.x
 
     partitions :
       - name              : debug
         machine_type      : n1-standard-2
-        max_node_count    : 100
+        max_node_count    : 300
         zone              : us-east1-b
 
     # Optional compute configuration fields
@@ -134,8 +135,8 @@ resources:
     # Additional partition
 
       - name           : partition2
-        machine_type   : n1-highmem-2
-        max_node_count : 3
+        machine_type   : n1-highmem-4
+        max_node_count : 8
         zone           : us-east1-b
 
     # Optional compute configuration fields
@@ -165,3 +166,4 @@ resources:
         # gpu_count              : 8
 
 #  [END cluster_yaml]
+
