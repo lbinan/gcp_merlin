@@ -47,7 +47,8 @@ gcloud deployment-manager deployments     --project="$(gcloud config get-value c
 
 You should now see the deployment listed under Deployment Manager in the console.
 You may see a warning about disk sizes not matching, but it is fine to ignore the warning. 
-
+Once slurm is installed, change its rights with
+chown slurm:slurm /apps/slurm/current/etc/*
 
 # 4. SSH
 
