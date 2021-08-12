@@ -97,6 +97,7 @@ bash installstuff.sh
 ```
 
 `installstuff.sh` installs the necessary software and also creates two directories `snake_outputs` and `slurm_outputs` that MERlin will write standard output to. 
+install stuff never works, so just run each line manually
 
 # 6. Prepare to run MERlin
 ### Configure .merlinenv
