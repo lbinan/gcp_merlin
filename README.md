@@ -77,6 +77,8 @@ If you get an error message about the Python installation, run `CLOUDSDK_PYTHON=
 You may see a error message about a group ID, this is fine to ignore.
 
 If you attempt to SSH into a VM instance immediately, you will be warned that slurm is currently being installed and a message will be deployed when it is finished. Wait for that message before continuing.
+once slurm is intalled you need to change its rights with
+chown slurm:slurm /apps/slurm/current/etc/*
 
 **Remember to suspend VM instances when not using to avoid incurring charges**
 
